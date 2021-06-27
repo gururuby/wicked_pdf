@@ -44,11 +44,13 @@ class WickedPdf
         end.html_safe
       end
 
-      def wicked_pdf_stylesheet_pack_tag(*sources, options = {})
+      def wicked_pdf_stylesheet_pack_tag(*sources)
         return unless defined?(Webpacker)
 
+        options = sources.extract_options!
+
         if running_in_development?
-          options[:host] = Webpacker.dev_server.host_with_port
+          options[:host] ||= Webpacker.dev_server.host_with_port
           stylesheet_pack_tag(*sources, options)
         else
           css_text = sources.collect do |source|
@@ -59,11 +61,13 @@ class WickedPdf
         end
       end
 
-      def wicked_pdf_javascript_pack_tag(*sources, options = {})
+      def wicked_pdf_javascript_pack_tag(*sources)
         return unless defined?(Webpacker)
 
+        options = sources.extract_options!
+
         if running_in_development?
-          options[:host] = Webpacker.dev_server.host_with_port
+          options[:host] ||= Webpacker.dev_server.host_with_port
           javascript_pack_tag(*sources, options)
         else
           sources.collect do |source|
